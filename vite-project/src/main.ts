@@ -11,4 +11,12 @@ console.log({
     socket2
 });
 
+socket2.on('message', (message: string): void => {
+    console.log(`socket2 [/hoge] ${message}`);
+})
+
+socket1.on('message', (message: string): void => {
+    console.log(`socket1 [/hoge] ${message}`);
+})
+
 createApp(App).mount('#app')
