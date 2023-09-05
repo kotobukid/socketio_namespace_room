@@ -36,10 +36,10 @@ app.get('/', (req, res) => {
 io.of("/").on("connection", (socket) => {
     console.log(`[/    ] a user connected ${socket.id}`);
 
-    socket.join('hoge');
+    socket.join('room1');
 
     socket.on('disconnect', () => {
-        console.log(`[/    ]user disconnected ${socket.id}`);
+        console.log(`[/    ] user disconnected ${socket.id}`);
     })
 });
 
@@ -47,19 +47,19 @@ io.of("/hoge").on('connection', (socket) => {
     // console.log(socket);
     console.log(`[/hoge] a user connected ${socket.id}`);
 
-    socket.join("hoge");
+    socket.join("room1");
 
     socket.on('disconnect', () => {
-        console.log(`[/hoge]user disconnected ${socket.id}`);
+        console.log(`[/hoge] user disconnected ${socket.id}`);
     })
 });
 
 setInterval(() => {
-    io.of("/hoge").to('hoge').emit('message', 'hello');
+    io.of("/hoge").to('room1').emit('message', 'hello to /hoge room1');
 }, 2000);
 
 setInterval(() => {
-    io.of("/").to('hoge').emit('message', 'hello');
+    io.of("/").to('room1').emit('message', 'hello to / room1');
 }, 2000);
 
 server.listen(3000, () => {
