@@ -8,7 +8,8 @@
   "private": true,
   "scripts": {
     "start": "node out/bin/www.js",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "@types/http-errors": "^2.0.1",
@@ -21,6 +22,7 @@
     "less-middleware": "~2.2.1",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
+    "socket.io": "^4.7.2",
     "typescript": "^5.2.2"
   },
   "main": "app.ts",

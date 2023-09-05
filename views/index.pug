@@ -1,5 +1,10 @@
 extends layout
 
+block head
+  script(src="/socket.io/socket.io.js")
+  script.
+    const socket = io();
+
 block content
   h1= title
   p Welcome to #{title}
