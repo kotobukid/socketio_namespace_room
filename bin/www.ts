@@ -6,8 +6,9 @@
 
 import app from '../app.js';
 import Debug from 'debug'
+
 const debug = Debug('ws-endpoints:server');
-import http  from 'http';
+import http from 'http';
 
 /**
  * Get port from environment and store in Express.
@@ -24,19 +25,32 @@ app.set('port', port);
 const server = http.createServer(app);
 
 
-import { Server } from "socket.io";
+import {Server} from "socket.io";
+
 const io = new Server(server);
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
+io.of("/").on("connection", (socket) => {
+    console.log(`[/    ] a user connected ${socket.id}`);
+    socket.on('disconnect', () => {
+        console.log(`[/    ]user disconnected ${socket.id}`);
+    })
+});
+
+io.of("/hoge").on('connection', (socket) => {
+    // console.log(socket);
+    console.log(`[/hoge] a user connected ${socket.id}`);
+
+    socket.on('disconnect', () => {
+        console.log(`[/hoge]user disconnected ${socket.id}`);
+    })
 });
 
 server.listen(3000, () => {
-  console.log('listening on *:3000');
+    console.log('listening on *:3000');
 });
 
 
@@ -53,19 +67,19 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val: number | string) {
-  const port: number = parseInt('' + val, 10);
+    const port: number = parseInt('' + val, 10);
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
 
-  return false;
+    return false;
 }
 
 /**
@@ -73,27 +87,27 @@ function normalizePort(val: number | string) {
  */
 
 function onError(error: any): void {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
 
-  const bind: string = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+    const bind: string = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 /**
@@ -101,10 +115,10 @@ function onError(error: any): void {
  */
 
 function onListening() {
-  var addr: any = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    // @ts-ignore
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+    var addr: any = server.address();
+    var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        // @ts-ignore
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
 }
